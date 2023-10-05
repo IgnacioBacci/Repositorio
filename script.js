@@ -3,14 +3,18 @@ let imageModelURL = 'https://teachablemachine.withgoogle.com/models/CJ0_Oejbt/';
 let img;
 let label = "";
 
+
 function preload() {
   classifier = ml5.imageClassifier(imageModelURL + 'model.json'); // Carga el modelo antes de que se cargue la página
 }
 
 function setup() {
-  createCanvas(400, 400); // Crea un canvas de 400x400 píxeles
+  let centro = document.querySelector('.centro'); // Selecciona el elemento con la clase "centro"
+  let canvas = createCanvas(400, 400); // Crea un canvas de 400x400 píxeles
+  canvas.id('defaultCanvas0'); // Establece el id del canvas
+  canvas.parent(centro); // Establece el elemento "centro" como padre del canvas
   let uploadBtn = createFileInput(handleFile); // Crea un botón para cargar un archivo
-  uploadBtn.position(20, 20); // Establece la posición del botón
+  uploadBtn.parent(centro); // Establece el elemento "centro" como padre del botón
 }
 
 function draw() {
@@ -23,7 +27,11 @@ function draw() {
 }
 
 function handleFile(file) {
+  clear(); // Limpia el canvas antes de mostrar la siguiente imagen
   if (file.type === 'image') {
+    if (img) {
+      img.remove(); // Elimina la imagen anterior antes de cargar la siguiente imagen
+    }
     img = createImg(file.data, ''); // Crea un elemento de imagen con el archivo cargado
     img.hide(); // Oculta la imagen original
     loop(); // Inicia el loop de dibujo
